@@ -28,7 +28,15 @@ function solution(gameResult) {
     }); 
     
     let teamOrders = Object.keys(teams).sort((name1, name2) => (teams[name2] === teams[name1] ? name1.localeCompare(name2) : teams[name2] - teams[name1]  ) );
-    return teamOrders.map((teamOrder, index) => `${index+1}. ${teamOrder}, ${teams[teamOrder]} ${teams[teamOrder] === 1 ? 'pt' : 'pts'}`);
+
+    let savedIndex = 1;
+    return teamOrders.map((teamOrder, index) => {
+        if (index > 0 && teams[teamOrder] === teams[teamOrders[index - 1]]) {
+            return `${savedIndex + 1}. ${teamOrder}, ${teams[teamOrder]} ${teams[teamOrder] === 1 ? 'pt' : 'pts'}`;
+        }
+        savedIndex = index;
+        return `${index+1}. ${teamOrder}, ${teams[teamOrder]} ${teams[teamOrder] === 1 ? 'pt' : 'pts'}`;
+    });
 }
 
 console.log(
@@ -39,3 +47,14 @@ console.log(
         "Lions 4, Grouches 0"
     ])
 );
+
+//Result:
+/*
+[
+    '1. Tarantulas, 6 pts',
+    '2. Lions, 5 pts',
+    '3. FC Awesome, 1 pt',
+    '3. Snakes, 1 pt',
+    '5. Grouches, 0 pts',
+]
+*/
